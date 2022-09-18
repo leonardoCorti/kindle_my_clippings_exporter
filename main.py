@@ -1,11 +1,5 @@
 import re
 
-def clipTest(clip):
-    for key in clip.keys():
-        print(f"{key}: {clip[key]}")
-
-    return 0
-
 clippingsFile = open("input\My Clippings.txt", "r", encoding="UTF-8")
 allClippings = clippingsFile.read()
 clippingsFile.close()
@@ -34,10 +28,6 @@ for clipping in listOfClippings:
         if(re.search(tokens[type],linesOfClipping[1])): clippingDict["type"]=type
     clippingDict["highlight"] = linesOfClipping[3]
     outputFileName= "output\\"+clippingDict["name"].strip().replace("/","")+".md"
-    # print(outputFileName)
     output = open(outputFileName, "a", encoding="UTF-8")
-    
     if(clippingDict["type"] != "bookmark"):output.write(f"{clippingDict['type']}:\n{clippingDict['highlight']}\n\n")
-
     output.close()
-    #clipTest(clippingDict)
