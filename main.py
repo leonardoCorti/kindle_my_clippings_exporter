@@ -1,3 +1,4 @@
+from lib2to3.pgen2 import token
 import re
 
 def clipTest(clip):
@@ -12,13 +13,14 @@ allClippings = clippingsFile.read()
 clippingsFile.close()
 listOfClippings = allClippings.split("==========\n")
 
-tokensLanguageDependeant={ #italian for now
+tokens={ #italian for now
     "bookmark": "Il tuo segnalibro",
-    "highlightPage": "La tua evidenziazione a pagina",
-    "note": "La tua nota a",
-    "highlightPosition": "Il tuo segnalibro alla posizione",
+    "highlightPage": "La tua evidenziazione",
+    "note": "La tua nota",
     "date": "Aggiunto in data"
 }
+
+typesOfClip = {"bookmark", "highlightPage", "note"}
 
 
 print(len(listOfClippings))
@@ -32,11 +34,11 @@ for clipping in listOfClippings:
     # linesOfClipping[2] #nothing
     # linesOfClipping[3] #highlight or note
     clippingDict["name"]= re.findall("^.*(?=\()",linesOfClipping[0])[0]
-    linemodified= linesOfClipping[0].replace(clippingDict["name"]," ")
-    linemodified= linemodified.replace("(","")
-    linemodified= linemodified.replace(")","")
     clippingDict["author"]= linesOfClipping[0].replace(clippingDict["name"]," ").replace("(","").replace(")","")
-    clipTest(clippingDict)
+    for type in typesOfClip:
+        if(re.search(tokens[type],linesOfClipping[1])): clippingDict["type"]=type
+    clippingDict["highlight"] = linesOfClipping[3]
 
+    clipTest(clippingDict)
     i +=1
-    if ( i == 4): break
+    if ( i == 50): break
