@@ -1,16 +1,18 @@
+import os
 import re
 
 clippingsFile = open("input\My Clippings.txt", "r", encoding="UTF-8")
 allClippings = clippingsFile.read()
 clippingsFile.close()
 listOfClippings = allClippings.split("==========\n")
-tokens={ #italian for now
+tokens={ #italian at the moment
     "bookmark": "Il tuo segnalibro",
     "highlightPage": "La tua evidenziazione",
     "note": "La tua nota",
     "date": "Aggiunto in data"
 }
 typesOfClip = {"bookmark", "highlightPage", "note"}
+if not os.path.isdir('output'): os.mkdir('output')
 
 for clipping in listOfClippings:
     clippingDict = {}
@@ -29,5 +31,5 @@ for clipping in listOfClippings:
     clippingDict["highlight"] = linesOfClipping[3]
     outputFileName= "output\\"+clippingDict["name"].strip().replace("/","")+".md"
     output = open(outputFileName, "a", encoding="UTF-8")
-    if(clippingDict["type"] != "bookmark"):output.write(f"{clippingDict['type']}:\n{clippingDict['highlight']}\n\n")
+    if(clippingDict["type"] != "bookmark"):output.write(f"{clippingDict['type'].strip()}:\n{clippingDict['highlight'].strip()}\n\n")
     output.close()
