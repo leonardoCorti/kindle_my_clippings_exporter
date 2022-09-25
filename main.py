@@ -20,16 +20,19 @@ def analyzeHighlight(tokens, typesOfClip, linesOfClipping):
     # linesOfClipping[2] #nothing
     # linesOfClipping[3] #highlight or note
     clippingDict = {}
-    if(re.match("^.*(?=\()",linesOfClipping[0])):
-        clippingDict["name"]= re.findall("^.*(?=\()",linesOfClipping[0])[0] 
-        clippingDict["author"]= linesOfClipping[0].replace(clippingDict["name"]," ").replace("(","").replace(")","")
-    else: clippingDict["name"]= linesOfClipping[0]
+    name(linesOfClipping, clippingDict)
 
     for type in typesOfClip:
         if(re.search(tokens[type],linesOfClipping[1])): clippingDict["type"]=type
 
     clippingDict["highlight"] = linesOfClipping[3]
     return clippingDict
+
+def name(linesOfClipping, clippingDict):
+    if(re.match("^.*(?=\()",linesOfClipping[0])):
+        clippingDict["name"]= re.findall("^.*(?=\()",linesOfClipping[0])[0] 
+        clippingDict["author"]= linesOfClipping[0].replace(clippingDict["name"]," ").replace("(","").replace(")","")
+    else: clippingDict["name"]= linesOfClipping[0]
 
 tokens={ #italian at the moment
     "bookmark": "Il tuo segnalibro",
